@@ -1,0 +1,52 @@
+print("Hello, World!")
+# Função para calcular a soma de dois números
+def adicao(a, b):
+    return a + b
+
+# Função para calcular a diferença de dois números
+def subtracao(a, b):
+    return a - b
+
+# Função para calcular o produto de dois números
+def multiplicacao(a, b):
+    return a * b
+
+# Função para calcular o quociente de dois números
+def divisao(a, b):
+    if b == 0:
+        print("Divisão por zero!")
+        return None
+    else:
+        return a / b
+
+# Função principal
+def calculadora():
+    # Leitura da operação
+    operacao = input("Escolha uma operação (+, -, *, /): ")
+
+    # Leitura dos números
+    num1 = float(input("Digite o primeiro número: "))
+    num2 = float(input("Digite o segundo número: "))
+
+    # Cálculo do resultado
+    if operacao == "+":
+        resultado = adicao(num1, num2)
+        print(f"O resultado da adição é: {resultado}")
+    elif operacao == "-":
+        resultado = subtracao(num1, num2)
+        print(f"O resultado da subtração é: {resultado}")
+    elif operacao == "*":
+        resultado = multiplicacao(num1, num2)
+        print(f"O resultado da multiplicação é: {resultado}")
+    elif operacao == "/":
+        resultado = divisao(num1, num2)
+        if resultado is not None:
+            print(f"O resultado da divisão é: {resultado}")
+    else:
+        print("Operação inválida!")
+
+# Chamada da função principal
+calculadora()
+
+
+
