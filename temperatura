@@ -1,4 +1,6 @@
 import requests
+SEU_API_KEY = os.environ["termometro"]
+
 
 def buscar_temperatura(cidade):
   """
