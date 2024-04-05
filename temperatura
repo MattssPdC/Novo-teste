@@ -10,28 +10,41 @@ def buscar_temperatura(cidade):
   Returns:
     Dicionário com as informações da temperatura ou mensagem de erro.
   """
-  # Chamada da API OpenWeatherMap
-  api_url = f"https://api.openweathermap.org/data/2.5/weather?appid={SEU_API_KEY}&q={cidade}&lang=pt_br&units=metric"
-  response = requests.get(api_url)
+  try:
+    # Validação básica de entrada
+    if not cidade:
+      raise ValueError("Nome da cidade não pode ser vazio")
 
-  # Verificando se a requisição foi bem sucedida
-  if response.status_code == 200:
-    # Convertendo a resposta JSON em um dicionário
-    dados = response.json()
+    # Chamada da API OpenWeatherMap
+    api_url = f"https://api.openweathermap.org/data/2.5/weather?appid={SEU_API_KEY}&q={cidade}&lang=pt_br&units=metric"
+    response = requests.get(api_url)
 
-    # Extraindo as informações da temperatura e clima
-    temperatura = dados["main"]["temp"]
-    descricao_clima = dados["weather"][0]["description"]
+    # Verificando se a requisição foi bem sucedida
+    if response.status_code == 200:
+      # Convertendo a resposta JSON em um dicionário
+      dados = response.json()
 
-    # Formatando e retornando as informações
-    return {
-      "cidade": cidade,
-      "temperatura": f"{temperatura:.1f}°C",
-      "clima": descricao_clima
-    }
-  else:
-    # Erro na requisição
-    return {"erro": f"Erro ao buscar temperatura para '{cidade}': {response.status_code}"}
+      # Extraindo as informações da temperatura e clima
+      temperatura = dados["main"]["temp"]
+      descricao_clima = dados["weather"][0]["description"]
+
+      # Formatando e retornando as informações
+      return {
+        "cidade": cidade,
+        "temperatura": f"{temperatura:.1f}°C",
+        "clima": descricao_clima
+      }
+    else:
+      # Erro na requisição
+      raise requests.exceptions.RequestException(f"Erro ao buscar temperatura para '{cidade}': {response.status_code}")
+
+  except ValueError as e:
+    # Erro de validação de entrada
+    return {"erro": str(e)}
+
+  except requests.exceptions.RequestException as e:
+    # Erro na requisição à API
+    return {"erro": f"Erro na requisição: {str(e)}"}
 
 while True:
   # Solicitando o nome da cidade ao usuário
@@ -49,3 +62,4 @@ while True:
     print(f"{resultado['erro']}")
   else:
     print(f"{resultado['cidade']}: {resultado['temperatura']} - {resultado['clima']}")
+
